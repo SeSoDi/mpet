@@ -72,7 +72,7 @@ defineProps<{
                         name="password"
                         required
                         :tabindex="2"
-                        autocomplete="contraseña-actual"
+                        autocomplete="current-password"
                         placeholder="Contraseña"
                     />
                     <InputError :message="errors.password" />
