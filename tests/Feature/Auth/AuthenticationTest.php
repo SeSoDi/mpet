@@ -24,7 +24,7 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post(route('login.store'), [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'password',
         ]);
 
@@ -52,7 +52,7 @@ class AuthenticationTest extends TestCase
         ])->save();
 
         $response = $this->post(route('login'), [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'password',
         ]);
 
@@ -66,7 +66,7 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $this->post(route('login.store'), [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'wrong-password',
         ]);
 
@@ -90,14 +90,22 @@ class AuthenticationTest extends TestCase
         RateLimiter::increment(implode('|', [$user->email, '127.0.0.1']), amount: 10);
 
         $response = $this->post(route('login.store'), [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'wrong-password',
         ]);
 
-        $response->assertSessionHasErrors('email');
+        $response->assertSessionHasErrors('login');
 
         $errors = session('errors');
 
-        $this->assertStringContainsString('Too many login attempts', $errors->first('email'));
+        $possibleMessages = [
+            'Too many login attempts', // English
+            'Demasiados intentos',    // Spanish
+        ];
+        $error = $errors->first('login');
+        $this->assertTrue(
+            collect($possibleMessages)->contains(fn($msg) => str_contains($error, $msg)),
+            "None of the expected rate limit messages found in: $error"
+        );
     }
 }
