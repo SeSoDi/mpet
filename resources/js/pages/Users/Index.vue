@@ -122,7 +122,7 @@ watch(
                         </tr>
                     </thead>
                     <tbody class="_bg-white divide-y divide-gray-300">
-                        <tr v-for="user in users" class="whitespace-nowrap">
+                        <tr v-for="user in users" :key="user.id" class="whitespace-nowrap">
                             <td class="px-6 py-4 text-sm text-gray-500">{{ user.id }}</td>
                             <td class="px-6 py-4 text-sm text-gray-100">{{ user.name }}</td>
                             <td class="px-6 py-4 text-sm text-gray-100">{{ user.email }}</td>
