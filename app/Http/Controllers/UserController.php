@@ -37,7 +37,7 @@ class UserController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
-    $validated['password'] = Hash::make($validated['password']);
+        $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');

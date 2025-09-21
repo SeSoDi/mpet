@@ -160,34 +160,34 @@ watch(
                                     Eliminar
                                 </button>
                             </td>
-        <!-- Delete Confirmation Modal -->
-        <template v-if="showDeleteModal">
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                <div class="bg-white p-6 rounded shadow-lg min-w-[300px] text-gray-900">
-                    <p class="text-base font-semibold mb-2">Confirmar eliminación</p>
-                    <p class="text-sm mb-4">¿Estás seguro de que deseas eliminar al usuario <span class="font-bold">"{{ userToDelete?.name }}"</span>? Esta acción no se puede deshacer.</p>
-                    <div class="mt-4 flex justify-end gap-2">
-                        <button
-                            ref="cancelButton"
-                            @click="closeDeleteModal"
-                            class="px-4 py-2 bg-gray-200 text-gray-900 rounded hover:bg-gray-300"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            @click="confirmDelete"
-                            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                        >
-                            Eliminar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </template>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
+                <!-- Delete Confirmation Modal (moved outside the table row loop) -->
+                <template v-if="showDeleteModal">
+                    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                        <div class="bg-white p-6 rounded shadow-lg min-w-[300px] text-gray-900">
+                            <p class="text-base font-semibold mb-2">Confirmar eliminación</p>
+                            <p class="text-sm mb-4">¿Estás seguro de que deseas eliminar al usuario <span class="font-bold">"{{ userToDelete?.name }}"</span>? Esta acción no se puede deshacer.</p>
+                            <div class="mt-4 flex justify-end gap-2">
+                                <button
+                                    ref="cancelButton"
+                                    @click="closeDeleteModal"
+                                    class="px-4 py-2 bg-gray-200 text-gray-900 rounded hover:bg-gray-300"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    @click="confirmDelete"
+                                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                >
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
         </div>
     </AppLayout>
 </template>
