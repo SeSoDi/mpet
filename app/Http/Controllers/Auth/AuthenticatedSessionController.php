@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\LogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,12 @@ class AuthenticatedSessionController extends Controller
             $request->session()->put([
                 'login.id' => $user->getKey(),
                 'login.remember' => $request->boolean('remember'),
+            ]);
+
+            // Log two-factor authentication initiation
+            LogService::auth('two_factor_initiated', $user->email, [
+                'user_id' => $user->id,
+                'remember' => $request->boolean('remember'),
             ]);
 
             return to_route('two-factor.login');

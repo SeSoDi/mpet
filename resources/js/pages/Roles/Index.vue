@@ -1,7 +1,6 @@
-
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem, User } from '@/types';
+import { type BreadcrumbItem, Role } from '@/types';
 import { Head, Link, usePage, router } from '@inertiajs/vue3';
 import { usePermissions } from '@/composables/usePermissions';
 import { ref, watch, nextTick } from 'vue';
@@ -11,11 +10,11 @@ import { es } from 'date-fns/locale';
 const { hasPermission } = usePermissions();
 
 const showDeleteModal = ref(false);
-const userToDelete = ref<User | null>(null);
+const roleToDelete = ref<Role | null>(null);
 const cancelButton = ref<HTMLButtonElement | null>(null);
 
-function openDeleteModal(user: User) {
-    userToDelete.value = user;
+function openDeleteModal(role: Role) {
+    roleToDelete.value = role;
     showDeleteModal.value = true;
     nextTick(() => {
         cancelButton.value?.focus();
@@ -24,26 +23,28 @@ function openDeleteModal(user: User) {
 
 function closeDeleteModal() {
     showDeleteModal.value = false;
-    userToDelete.value = null;
+    roleToDelete.value = null;
 }
 
 function confirmDelete() {
-    if (userToDelete.value) {
-        router.delete(`/users/${userToDelete.value.id}`);
+    if (roleToDelete.value) {
+        router.delete(`/roles/${roleToDelete.value.id}`);
         closeDeleteModal();
     }
 }
 
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Usuarios',
-        href: '/users',
+        title: 'Administración de Usuarios',
+    },
+    {
+        title: 'Roles',
+        href: '/roles',
     },
 ];
 
 defineProps<{
-    users: User[];
+    roles: Role[];
 }>();
 
 interface FlashProps {
@@ -88,10 +89,16 @@ watch(
     },
     { immediate: true }
 );
+
+function canDeleteRole(role: Role): boolean {
+    // Prevent deletion of system roles and roles with users assigned
+    const systemRoles = ['superadmin', 'admin'];
+    return !systemRoles.includes(role.name.toLowerCase()) && (!role.users_count || role.users_count === 0);
+}
 </script>
 
 <template>
-    <Head title="Usuarios" />
+    <Head title="Roles" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto container flex justify-center mx-auto">
@@ -106,10 +113,9 @@ watch(
             </div>
             <div class="border-b border-gray-200 shadow">
                 <Link 
-                    v-if="hasPermission('create_users')"
-                    href="/users/create"
+                    href="/roles/create"
                     class="mt-2 cursor-pointer px-3 py-2 text-white bg-green-600 rounded-md">
-                    Crear usuario
+                    Crear Rol
                 </Link>
 
                 <table class="mt-3 divide-y divide-gray-300 ">
@@ -117,61 +123,96 @@ watch(
                         <tr>
                             <th class="px-6 py-2 text-sm text-gray-500">ID</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Nombre</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Correo electrónico</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Desde</th>
-                            <th v-if="hasPermission('view_users')" class="px-6 py-2 text-sm text-gray-500">Ver</th>
-                            <th v-if="hasPermission('edit_users')" class="px-6 py-2 text-sm text-gray-500">Editar</th>
-                            <th v-if="hasPermission('delete_users')" class="px-6 py-2 text-sm text-gray-500">Eliminar</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Descripción</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Usuarios</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Permisos</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Creado</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Ver</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Editar</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody class="_bg-white divide-y divide-gray-300">
-                        <tr v-for="user in users" :key="user.id" class="whitespace-nowrap">
-                            <td class="px-6 py-4 text-sm text-gray-500">{{ user.id }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-100">{{ user.name }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-100">{{ user.email }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-100 text-center">
-                                {{ formatDistanceToNow(new Date(user.created_at), { addSuffix: false, locale: es }) }}
+                        <tr v-for="role in roles" :key="role.id" class="whitespace-nowrap">
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ role.id }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-100">
+                                <span 
+                                    :class="[
+                                        'px-2 py-1 rounded text-xs font-semibold',
+                                        role.name.toLowerCase() === 'superadmin' ? 'bg-purple-100 text-purple-800' :
+                                        role.name.toLowerCase() === 'admin' ? 'bg-blue-100 text-blue-800' :
+                                        role.name.toLowerCase() === 'manager' ? 'bg-green-100 text-green-800' :
+                                        'bg-gray-100 text-gray-800'
+                                    ]"
+                                >
+                                    {{ role.name }}
+                                </span>
                             </td>
-                            <td v-if="hasPermission('view_users')" class="px-6 py-4">
+                            <td class="px-6 py-4 text-sm text-gray-100 max-w-xs">
+                                <span class="truncate block" :title="role.description">
+                                    {{ role.description }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-100 text-center">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                    {{ role.users_count || 0 }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-100 text-center">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                                    {{ role.permissions?.length || 0 }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-100 text-center">
+                                {{ formatDistanceToNow(new Date(role.created_at), { addSuffix: false, locale: es }) }}
+                            </td>
+                            <td class="px-6 py-4">
                                 <Link
-                                    :href="`/users/${user.id}`"
+                                    :href="`/roles/${role.id}`"
                                     class="px-4 py-1 text-sm text-blue-900 bg-blue-200 rounded-full hover:bg-blue-300 transition-colors"
                                 >
                                     Mostrar
                                 </Link>
                             </td>
-                            <td v-if="hasPermission('edit_users')" class="px-6 py-4">
+                            <td class="px-6 py-4">
                                 <Link
-                                    :href="`/users/${user.id}/edit`"
+                                    :href="`/roles/${role.id}/edit`"
                                     class="px-4 py-1 text-sm text-green-900 bg-green-200 rounded-full hover:bg-green-300 transition-colors"
                                 >
                                     Editar
                                 </Link>
                             </td>
-                            <td v-if="hasPermission('delete_users')" class="px-6 py-4">
-                                <!--
-                                    Delete button: Backend validations
-                                    - Cannot delete the 'root' user (UserController@destroy)
-                                    - Cannot delete your own user (UserController@destroy)
-                                    Both cases will show an error message if attempted.
-                                -->
+                            <td class="px-6 py-4">
                                 <button
-                                    @click="openDeleteModal(user)"
+                                    v-if="canDeleteRole(role)"
+                                    @click="openDeleteModal(role)"
                                     class="px-4 py-1 text-sm text-white bg-red-600 rounded-full hover:bg-red-700 transition-colors"
                                     type="button"
                                 >
                                     Eliminar
                                 </button>
+                                <span
+                                    v-else
+                                    class="px-4 py-1 text-sm text-gray-500 bg-gray-200 rounded-full cursor-not-allowed"
+                                    title="No se puede eliminar roles del sistema o con usuarios asignados"
+                                >
+                                    Protegido
+                                </span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <!-- Delete Confirmation Modal (moved outside the table row loop) -->
+                
+                <!-- Delete Confirmation Modal -->
                 <template v-if="showDeleteModal">
                     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                         <div class="bg-white p-6 rounded shadow-lg min-w-[300px] text-gray-900">
                             <p class="text-base font-semibold mb-2">Confirmar eliminación</p>
-                            <p class="text-sm mb-4">¿Estás seguro de que deseas eliminar al usuario <span class="font-bold">"{{ userToDelete?.name }}"</span>? Esta acción no se puede deshacer.</p>
+                            <p class="text-sm mb-4">
+                                ¿Estás seguro de que deseas eliminar el rol 
+                                <span class="font-bold">"{{ roleToDelete?.name }}"</span>? 
+                                Esta acción no se puede deshacer.
+                            </p>
                             <div class="mt-4 flex justify-end gap-2">
                                 <button
                                     ref="cancelButton"
@@ -190,7 +231,7 @@ watch(
                         </div>
                     </div>
                 </template>
-            </div> <!-- close .border-b border-gray-200 shadow -->
-        </div> <!-- close .overflow-x-auto container flex justify-center mx-auto -->
+            </div>
+        </div>
     </AppLayout>
 </template>

@@ -1,17 +1,37 @@
 
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Form } from '@inertiajs/vue3';
+import { type BreadcrumbItem, Role } from '@/types';
+import { Head, useForm } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ref } from 'vue';
+
+const props = defineProps<{
+    roles: Role[];
+}>();
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Users', href: '/users' },
   { title: 'Crear usuario', href: '/users/create' },
 ];
+
+const selectedRoles = ref<number[]>([]);
+
+const form = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    role_ids: [] as number[],
+});
+
+const submit = () => {
+    form.role_ids = selectedRoles.value;
+    form.post('/users');
+};
 </script>
 
 <template>
@@ -19,12 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="max-w-lg mx-auto mt-8">
             <h1 class="text-2xl font-bold mb-6">Crear usuario</h1>
-            <Form
-                method="post"
-                action="/users"
-                v-slot="{ errors, processing }"
-                class="flex flex-col gap-6"
-            >
+            <form @submit.prevent="submit" class="flex flex-col gap-6">
                 <div class="grid gap-6">
                     <div class="grid gap-2">
                         <Label for="name">Nombre</Label>
@@ -34,10 +49,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             required
                             autofocus
                             autocomplete="name"
-                            name="name"
+                            v-model="form.name"
                             placeholder="Nombre completo"
                         />
-                        <InputError :message="errors.name" />
+                        <InputError :message="form.errors.name" />
                     </div>
 
                     <div class="grid gap-2">
@@ -47,10 +62,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             type="email"
                             required
                             autocomplete="email"
-                            name="email"
+                            v-model="form.email"
                             placeholder="email@example.com"
                         />
-                        <InputError :message="errors.email" />
+                        <InputError :message="form.errors.email" />
                     </div>
 
                     <div class="grid gap-2">
@@ -60,10 +75,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             type="password"
                             required
                             autocomplete="new-password"
-                            name="password"
+                            v-model="form.password"
                             placeholder="Contraseña"
                         />
-                        <InputError :message="errors.password" />
+                        <InputError :message="form.errors.password" />
                     </div>
 
                     <div class="grid gap-2">
@@ -73,22 +88,46 @@ const breadcrumbs: BreadcrumbItem[] = [
                             type="password"
                             required
                             autocomplete="new-password"
-                            name="password_confirmation"
+                            v-model="form.password_confirmation"
                             placeholder="Confirmar contraseña"
                         />
-                        <InputError :message="errors.password_confirmation" />
+                        <InputError :message="form.errors.password_confirmation" />
+                    </div>
+
+                    <!-- Role Assignment -->
+                    <div class="grid gap-3">
+                        <Label class="text-base font-semibold">Roles</Label>
+                        <div class="grid grid-cols-1 gap-2 p-4 border border-gray-200 rounded-md bg-gray-50" style="text-align: left;">
+                            <div v-for="role in roles" :key="role.id" class="block" style="text-align: left;">
+                                <label class="flex items-start space-x-2 cursor-pointer" style="text-align: left;">
+                                    <input
+                                        :id="`role-${role.id}`"
+                                        type="checkbox"
+                                        :value="role.id"
+                                        v-model="selectedRoles"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 mt-0.5 flex-shrink-0"
+                                    />
+                                    <span class="text-sm font-medium text-gray-900" style="text-align: left;">
+                                        {{ role.name }}
+                                        <span v-if="role.description" class="text-gray-500 font-normal"> - {{ role.description }}</span>
+                                    </span>
+                                </label>
+                            </div>
+                            <p v-if="roles.length === 0" class="text-sm text-gray-500 italic">No hay roles disponibles</p>
+                        </div>
+                        <InputError :message="form.errors.role_ids" />
                     </div>
 
                     <Button
                         type="submit"
                         class="mt-2 w-full"
-                        :disabled="processing"
+                        :disabled="form.processing"
                         data-test="create-user-button"
                     >
                         Crear usuario
                     </Button>
                 </div>
-            </Form>
+            </form>
         </div>
     </AppLayout>
 </template>
