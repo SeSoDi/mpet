@@ -160,7 +160,6 @@ watch(
                                     Eliminar
                                 </button>
                             </td>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
