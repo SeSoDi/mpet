@@ -9,7 +9,6 @@ import { es } from 'date-fns/locale';
 
 const showDeleteModal = ref(false);
 const userToDelete = ref<User | null>(null);
-import { Ref } from 'vue';
 const cancelButton = ref<HTMLButtonElement | null>(null);
 
 function openDeleteModal(user: User) {
@@ -35,7 +34,7 @@ function confirmDelete() {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Users',
+        title: 'Usuarios',
         href: '/users',
     },
 ];
@@ -89,7 +88,7 @@ watch(
 </script>
 
 <template>
-    <Head title="Users" />
+    <Head title="Usuarios" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto container flex justify-center mx-auto">
@@ -106,7 +105,7 @@ watch(
                 <Link 
                     href="/users/create"
                     class="mt-2 cursor-pointer px-3 py-2 text-white bg-green-600 rounded-md">
-                    Crear Usuario
+                    Crear usuario
                 </Link>
 
                 <table class="mt-3 divide-y divide-gray-300 ">
@@ -114,7 +113,7 @@ watch(
                         <tr>
                             <th class="px-6 py-2 text-sm text-gray-500">ID</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Nombre</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Email</th>
+                            <th class="px-6 py-2 text-sm text-gray-500">Correo electrónico</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Desde</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Ver</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Editar</th>
@@ -187,6 +186,7 @@ watch(
                         </div>
                     </div>
                 </template>
-        </div>
+            </div> <!-- close .border-b border-gray-200 shadow -->
+        </div> <!-- close .overflow-x-auto container flex justify-center mx-auto -->
     </AppLayout>
 </template>

@@ -6,13 +6,12 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { computed } from 'vue';
 
 const props = defineProps<{ user: User }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-  { title: 'Users', href: '/users' },
-  { title: 'Editar usuario', href: `/users/${props.user.id}/edit` },
+    { title: 'Usuarios', href: '/users' },
+    { title: 'Editar usuario', href: `/users/${props.user.id}/edit` },
 ];
 
 const form = useForm({
@@ -26,7 +25,7 @@ const form = useForm({
 <template>
     <Head title="Editar usuario" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="max-w-lg mx-auto mt-8">
+    <div class="max-w-xl mx-auto mt-8">
             <h1 class="text-2xl font-bold mb-6">Editar usuario</h1>
             <Form
                 method="post"
@@ -90,14 +89,24 @@ const form = useForm({
                         <InputError :message="errors.password_confirmation" />
                     </div>
 
-                    <Button
-                        type="submit"
-                        class="mt-2 w-full"
-                        :disabled="processing"
-                        data-test="update-user-button"
-                    >
-                        Guardar cambios
-                    </Button>
+                    <div class="flex flex-row gap-4 mt-2">
+                        <Button
+                            type="submit"
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold"
+                            :disabled="processing"
+                            data-test="update-user-button"
+                        >
+                            Guardar cambios
+                        </Button>
+                        <Button
+                            type="button"
+                            class="flex-1 bg-red-100 text-red-700 border border-red-300 hover:bg-red-200 font-semibold"
+                            @click="$inertia.visit('/users')"
+                            data-test="cancel-edit-user-button"
+                        >
+                            Cancelar cambios
+                        </Button>
+                    </div>
                 </div>
             </Form>
         </div>

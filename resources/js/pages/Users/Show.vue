@@ -2,19 +2,14 @@
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, User } from '@/types';
-import { Head, Form, useForm } from '@inertiajs/vue3';
-import InputError from '@/components/InputError.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 import UserInfoCard from '@/components/UserInfoCard.vue';
 
 const props = defineProps<{ user: User }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-  { title: 'Users', href: '/users' },
-  { title: 'Mostrar usuario', href: `/users/${props.user.id}/show` },
+    { title: 'Usuarios', href: '/users' },
+    { title: 'Mostrar usuario', href: `/users/${props.user.id}/show` },
 ];
 
 </script>
