@@ -14,6 +14,11 @@ class LogController extends Controller
      */
     public function index(Request $request): Response
     {
+        // Check permission to view logs
+        if (!auth()->user()->hasPermission('view_logs')) {
+            abort(403, 'No tienes permisos para ver la bitácora del sistema');
+        }
+
         $query = Log::with('user:id,name,email')
             ->orderBy('logged_at', 'desc');
 
@@ -65,6 +70,11 @@ class LogController extends Controller
      */
     public function show(Log $log): Response
     {
+        // Check permission to view logs
+        if (!auth()->user()->hasPermission('view_logs')) {
+            abort(403, 'No tienes permisos para ver la bitácora del sistema');
+        }
+
         $log->load('user:id,name,email');
         
         return Inertia::render('Logs/Show', [
@@ -77,9 +87,14 @@ class LogController extends Controller
      */
     public function destroy(Log $log)
     {
+        // Check permission to delete logs (SuperAdmin only)
+        if (!auth()->user()->hasPermission('delete_logs')) {
+            abort(403, 'No tienes permisos para eliminar registros de la bitácora');
+        }
+
         $log->delete();
 
-        return back()->with('success', 'Log eliminado correctamente.');
+        return back()->with('success', 'Registro de bitácora eliminado correctamente.');
     }
 
     /**
@@ -87,6 +102,11 @@ class LogController extends Controller
      */
     public function bulkDelete(Request $request)
     {
+        // Check permission to delete logs (SuperAdmin only)
+        if (!auth()->user()->hasPermission('delete_logs')) {
+            abort(403, 'No tienes permisos para eliminar registros de la bitácora');
+        }
+
         $request->validate([
             'older_than_days' => 'required|integer|min:1',
             'level' => 'nullable|string',
@@ -105,7 +125,7 @@ class LogController extends Controller
 
         $deletedCount = $query->delete();
 
-        return back()->with('success', "Se eliminaron {$deletedCount} logs correctamente.");
+        return back()->with('success', "Se eliminaron {$deletedCount} registros de bitácora correctamente.");
     }
 
     /**

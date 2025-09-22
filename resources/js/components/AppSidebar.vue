@@ -15,7 +15,7 @@ import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { usePermissions } from '@/composables/usePermissions';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Github, LayoutGrid, Users, Shield, KeyRound } from 'lucide-vue-next';
+import { BookOpen, Github, LayoutGrid, Users, Shield, KeyRound, ScrollText } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 
@@ -79,18 +79,35 @@ const mainNavItems = computed(() => [
     ...userManagementItems.value,
 ]);
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/SeSoDi/mpet',
-        icon: Github,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+// Footer navigation items (some are permission-based)
+const footerNavItems = computed(() => {
+    const items: NavItem[] = [];
+    
+    // Logs link - only for users with view_logs permission
+    if (hasPermission('view_logs')) {
+        items.push({
+            title: 'Bitácora',
+            href: '/logs',
+            icon: ScrollText,
+        });
+    }
+    
+    // Always visible items
+    items.push(
+        {
+            title: 'Github Repo',
+            href: 'https://github.com/SeSoDi/mpet',
+            icon: Github,
+        },
+        {
+            title: 'Documentation',
+            href: 'https://laravel.com/docs/starter-kits#vue',
+            icon: BookOpen,
+        }
+    );
+    
+    return items;
+});
 </script>
 
 <template>

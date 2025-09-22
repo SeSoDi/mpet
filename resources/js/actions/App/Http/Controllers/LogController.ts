@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 export const show = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 show.url = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -130,7 +130,7 @@ show.url = (args: { log: number | { id: number } } | [log: number | { id: number
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 show.get = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -140,7 +140,7 @@ show.get = (args: { log: number | { id: number } } | [log: number | { id: number
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 show.head = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -150,7 +150,7 @@ show.head = (args: { log: number | { id: number } } | [log: number | { id: numbe
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 const showForm = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ const showForm = (args: { log: number | { id: number } } | [log: number | { id: 
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 showForm.get = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -170,7 +170,7 @@ showForm.get = (args: { log: number | { id: number } } | [log: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\LogController::show
-* @see app/Http/Controllers/LogController.php:66
+* @see app/Http/Controllers/LogController.php:71
 * @route '/logs/{log}'
 */
 showForm.head = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -187,7 +187,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\LogController::destroy
-* @see app/Http/Controllers/LogController.php:78
+* @see app/Http/Controllers/LogController.php:88
 * @route '/logs/{log}'
 */
 export const destroy = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -202,7 +202,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\LogController::destroy
-* @see app/Http/Controllers/LogController.php:78
+* @see app/Http/Controllers/LogController.php:88
 * @route '/logs/{log}'
 */
 destroy.url = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -235,7 +235,7 @@ destroy.url = (args: { log: number | { id: number } } | [log: number | { id: num
 
 /**
 * @see \App\Http\Controllers\LogController::destroy
-* @see app/Http/Controllers/LogController.php:78
+* @see app/Http/Controllers/LogController.php:88
 * @route '/logs/{log}'
 */
 destroy.delete = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -245,7 +245,7 @@ destroy.delete = (args: { log: number | { id: number } } | [log: number | { id: 
 
 /**
 * @see \App\Http\Controllers\LogController::destroy
-* @see app/Http/Controllers/LogController.php:78
+* @see app/Http/Controllers/LogController.php:88
 * @route '/logs/{log}'
 */
 const destroyForm = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -260,7 +260,7 @@ const destroyForm = (args: { log: number | { id: number } } | [log: number | { i
 
 /**
 * @see \App\Http\Controllers\LogController::destroy
-* @see app/Http/Controllers/LogController.php:78
+* @see app/Http/Controllers/LogController.php:88
 * @route '/logs/{log}'
 */
 destroyForm.delete = (args: { log: number | { id: number } } | [log: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -277,7 +277,7 @@ destroy.form = destroyForm
 
 /**
 * @see \App\Http\Controllers\LogController::bulkDelete
-* @see app/Http/Controllers/LogController.php:88
+* @see app/Http/Controllers/LogController.php:103
 * @route '/logs/bulk-delete'
 */
 export const bulkDelete = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -292,7 +292,7 @@ bulkDelete.definition = {
 
 /**
 * @see \App\Http\Controllers\LogController::bulkDelete
-* @see app/Http/Controllers/LogController.php:88
+* @see app/Http/Controllers/LogController.php:103
 * @route '/logs/bulk-delete'
 */
 bulkDelete.url = (options?: RouteQueryOptions) => {
@@ -301,7 +301,7 @@ bulkDelete.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\LogController::bulkDelete
-* @see app/Http/Controllers/LogController.php:88
+* @see app/Http/Controllers/LogController.php:103
 * @route '/logs/bulk-delete'
 */
 bulkDelete.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -311,7 +311,7 @@ bulkDelete.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\LogController::bulkDelete
-* @see app/Http/Controllers/LogController.php:88
+* @see app/Http/Controllers/LogController.php:103
 * @route '/logs/bulk-delete'
 */
 const bulkDeleteForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -321,7 +321,7 @@ const bulkDeleteForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'
 
 /**
 * @see \App\Http\Controllers\LogController::bulkDelete
-* @see app/Http/Controllers/LogController.php:88
+* @see app/Http/Controllers/LogController.php:103
 * @route '/logs/bulk-delete'
 */
 bulkDeleteForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -333,7 +333,7 @@ bulkDelete.form = bulkDeleteForm
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 export const stats = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -348,7 +348,7 @@ stats.definition = {
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 stats.url = (options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ stats.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 stats.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -367,7 +367,7 @@ stats.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 stats.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -377,7 +377,7 @@ stats.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 const statsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -387,7 +387,7 @@ const statsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 statsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -397,7 +397,7 @@ statsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\LogController::stats
-* @see app/Http/Controllers/LogController.php:114
+* @see app/Http/Controllers/LogController.php:134
 * @route '/api/logs/stats'
 */
 statsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

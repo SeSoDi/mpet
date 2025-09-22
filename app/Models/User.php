@@ -72,13 +72,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all permissions for this user through their roles
+     * Get all permissions collection for this user through their roles
      */
-    public function permissions()
+    public function getAllPermissions()
     {
-        return Permission::whereHas('roles', function ($query) {
-            $query->whereIn('role_id', $this->roles->pluck('id'));
-        });
+        return $this->roles->flatMap(function ($role) {
+            return $role->permissions;
+        })->unique('id');
     }
 
     /**
@@ -91,7 +91,7 @@ class User extends Authenticatable
             return true;
         }
         
-        return $this->permissions()->where('name', $permissionName)->exists();
+        return $this->getAllPermissions()->contains('name', $permissionName);
     }
 
     /**

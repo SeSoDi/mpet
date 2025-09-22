@@ -1,6 +1,8 @@
 <template>
-  <div class="py-12">
-    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+  <Head title="Detalles del Log" />
+  
+  <AppLayout :breadcrumbs="breadcrumbs">
+    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
           <div class="flex justify-between items-center mb-6">
@@ -10,9 +12,10 @@
                 href="/logs"
                 class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
               >
-                Volver a Logs
+                Volver a Bitácora
               </Link>
               <button
+                v-if="hasPermission('delete_logs')"
                 @click="deleteLog"
                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
@@ -172,12 +175,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, Head } from '@inertiajs/vue3';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { index as logsIndex, show as logsShow } from '@/routes/logs';
+import { usePermissions } from '@/composables/usePermissions';
+import type { BreadcrumbItem } from '@/types';
 
 interface Log {
   id: number;
@@ -198,6 +205,19 @@ interface Log {
 const props = defineProps<{
   log: Log;
 }>();
+
+const { hasPermission } = usePermissions();
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Bitácora',
+        href: logsIndex().url,
+    },
+    {
+        title: `Log #${props.log.id}`,
+        href: logsShow({ log: props.log.id }).url,
+    },
+];
 
 const hasRequestInfo = computed(() => {
   return props.log.context && (

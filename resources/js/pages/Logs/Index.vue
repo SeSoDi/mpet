@@ -1,10 +1,12 @@
 <template>
-  <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+  <Head title="Bitácora" />
+  
+  <AppLayout :breadcrumbs="breadcrumbs">
+    <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
           <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900">Logs del Sistema</h1>
+            <h1 class="text-3xl font-bold text-gray-900">Bitácora</h1>
             <div class="flex gap-2">
               <button 
                 @click="refreshLogs"
@@ -13,6 +15,7 @@
                 Actualizar
               </button>
               <button 
+                v-if="hasPermission('delete_logs')"
                 @click="showBulkDelete = true"
                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
@@ -136,6 +139,7 @@
                       Ver
                     </Link>
                     <button
+                      v-if="hasPermission('delete_logs')"
                       @click="deleteLog(log)"
                       class="text-red-600 hover:text-red-900"
                     >
@@ -258,12 +262,16 @@
         </form>
       </div>
     </div>
-  </div>
+  </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, Head } from '@inertiajs/vue3';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { index as logsIndex } from '@/routes/logs';
+import { usePermissions } from '@/composables/usePermissions';
+import type { BreadcrumbItem } from '@/types';
 
 interface Log {
   id: number;
@@ -302,6 +310,8 @@ const props = defineProps<{
   queryParams: Record<string, any>;
 }>();
 
+const { hasPermission } = usePermissions();
+
 const showBulkDelete = ref(false);
 const filters = reactive({
   search: props.queryParams.search || '',
@@ -317,6 +327,13 @@ const bulkDeleteForm = reactive({
 });
 
 const availableFilters = computed(() => props.filters);
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Bitácora',
+        href: logsIndex().url,
+    },
+];
 
 const pageNumbers = computed(() => {
   const pages = [];

@@ -27,7 +27,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'assign_roles', 'description' => 'Asignar roles a usuarios'],
             
             // System settings
-            ['name' => 'view_logs', 'description' => 'Ver registros del sistema'],
+            ['name' => 'view_logs', 'description' => 'Ver registros de la bitácora'],
+            ['name' => 'delete_logs', 'description' => 'Eliminar registros de la bitácora (Solo SuperAdmin)'],
             ['name' => 'manage_settings', 'description' => 'Gestionar configuración del sistema'],
             ['name' => 'change_app_config', 'description' => 'Cambiar nombre de app, logo, etc. (Solo SuperAdmin)'],
             
