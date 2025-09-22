@@ -9,3 +9,6 @@
 CHANGELOG.md export-ignore
 README.md export-ignore
 .github/workflows/browser-tests.yml export-ignore
+
+# Auto-generated route files - exclude from code reviews and language statistics
+resources/js/routes/**/*.ts linguist-generated=true
