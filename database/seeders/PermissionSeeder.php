@@ -14,10 +14,6 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Clear existing data and pivot tables
-        DB::table('permission_role')->delete();
-        Permission::query()->delete();
-
         $permissions = [
             // User management
             ['name' => 'view_users', 'description' => 'Ver lista de usuarios'],

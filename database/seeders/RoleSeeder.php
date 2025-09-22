@@ -13,11 +13,6 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Clear existing data and pivot tables
-        DB::table('permission_role')->delete();
-        DB::table('role_user')->delete();
-        Role::query()->delete();
-
         $roles = [
             [
                 'name' => 'superadmin',
