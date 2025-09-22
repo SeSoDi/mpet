@@ -7,8 +7,6 @@ import { ref, watch, nextTick } from 'vue';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const { hasPermission } = usePermissions();
-
 const showDeleteModal = ref(false);
 const roleToDelete = ref<Role | null>(null);
 const cancelButton = ref<HTMLButtonElement | null>(null);

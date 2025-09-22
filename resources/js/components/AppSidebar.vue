@@ -45,8 +45,8 @@ const userManagementItems = computed((): NavItem[] => {
         });
     }
     
-    // Add Roles submenu if user can view roles
-    if (hasPermission('view_roles')) {
+    // Add Roles submenu if user can manage roles
+    if (canManageRoles.value) {
         userAdminItems.push({
             title: 'Roles',
             href: '/roles',
@@ -54,8 +54,8 @@ const userManagementItems = computed((): NavItem[] => {
         });
     }
     
-    // Add Permissions submenu if user can view roles (permissions are managed through roles)
-    if (hasPermission('view_roles')) {
+    // Add Permissions submenu if user can manage roles (permissions are managed through roles)
+    if (canManageRoles.value) {
         userAdminItems.push({
             title: 'Permisos',
             href: '/permissions',

@@ -79,11 +79,6 @@ import { ShieldCheck, Shield, CircleUser } from 'lucide-vue-next';
 
 const props = defineProps<{ user: any }>();
 
-const userInitials = computed(() => {
-  if (!props.user.name) return '';
-  return props.user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase();
-});
-
 const isSuperAdmin = computed(() => {
   return props.user.roles?.some((role: any) => role.name === 'superadmin') || false;
 });

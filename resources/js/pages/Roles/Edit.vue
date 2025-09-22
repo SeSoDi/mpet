@@ -54,8 +54,6 @@ const isSystemRole = (roleName: string): boolean => {
     const systemRoles = ['superadmin', 'admin'];
     return systemRoles.includes(roleName.toLowerCase());
 };
-
-const canEditRoleName = !isSystemRole(props.role.name);
 </script>
 
 <template>

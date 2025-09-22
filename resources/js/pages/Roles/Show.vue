@@ -26,10 +26,6 @@ const isSystemRole = (roleName: string): boolean => {
     const systemRoles = ['superadmin', 'admin'];
     return systemRoles.includes(roleName.toLowerCase());
 };
-
-const canDeleteRole = (): boolean => {
-    return !isSystemRole(props.role.name) && (!props.role.users_count || props.role.users_count === 0);
-};
 </script>
 
 <template>
