@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
+use App\Services\LogService;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,15 @@ class LoginRequest extends FormRequest
         if (! $user || ! Auth::getProvider()->validateCredentials($user, ['password' => $password])) {
             RateLimiter::hit($this->throttleKey());
 
+            // Log failed login attempt
+            LogService::auth('failed_login', $login, [
+                'attempted_login' => $login,
+                'login_field' => $field,
+                'reason' => $user ? 'invalid_password' : 'user_not_found',
+                'rate_limit_hits' => RateLimiter::attempts($this->throttleKey()),
+                'remaining_attempts' => 5 - RateLimiter::attempts($this->throttleKey()),
+            ]);
+
             throw ValidationException::withMessages([
                 'login' => trans('auth.failed'),
             ]);
@@ -78,6 +88,16 @@ class LoginRequest extends FormRequest
         event(new Lockout($this));
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
+
+        // Log rate limiting event
+        LogService::warning(LogService::CHANNEL_AUTH, 'Usuario bloqueado por demasiados intentos de login', [
+            'attempted_login' => $this->input('login'),
+            'throttle_key' => $this->throttleKey(),
+            'lockout_duration_seconds' => $seconds,
+            'lockout_duration_minutes' => ceil($seconds / 60),
+            'max_attempts' => 5,
+            'lockout_until' => now()->addSeconds($seconds)->toISOString(),
+        ]);
 
         throw ValidationException::withMessages([
             'login' => trans('auth.throttle', [

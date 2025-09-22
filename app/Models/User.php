@@ -46,4 +46,59 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Roles that belong to this user
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }
+
+    /**
+     * Check if user has any of the given roles
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles()->whereIn('name', $roles)->exists();
+    }
+
+    /**
+     * Get all permissions collection for this user through their roles
+     */
+    public function getAllPermissions()
+    {
+        return $this->roles->flatMap(function ($role) {
+            return $role->permissions;
+        })->unique('id');
+    }
+
+    /**
+     * Check if user has a specific permission
+     */
+    public function hasPermission(string $permissionName): bool
+    {
+        // SuperAdmin always has all permissions
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+        
+        return $this->getAllPermissions()->contains('name', $permissionName);
+    }
+
+    /**
+     * Check if user is SuperAdmin
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('superadmin');
+    }
 }

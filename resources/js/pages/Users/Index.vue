@@ -3,9 +3,12 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, User } from '@/types';
 import { Head, Link, usePage, router } from '@inertiajs/vue3';
+import { usePermissions } from '@/composables/usePermissions';
 import { ref, watch, nextTick } from 'vue';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
+
+const { hasPermission } = usePermissions();
 
 const showDeleteModal = ref(false);
 const userToDelete = ref<User | null>(null);
@@ -103,6 +106,7 @@ watch(
             </div>
             <div class="border-b border-gray-200 shadow">
                 <Link 
+                    v-if="hasPermission('create_users')"
                     href="/users/create"
                     class="mt-2 cursor-pointer px-3 py-2 text-white bg-green-600 rounded-md">
                     Crear usuario
@@ -115,9 +119,9 @@ watch(
                             <th class="px-6 py-2 text-sm text-gray-500">Nombre</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Correo electrónico</th>
                             <th class="px-6 py-2 text-sm text-gray-500">Desde</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Ver</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Editar</th>
-                            <th class="px-6 py-2 text-sm text-gray-500">Eliminar</th>
+                            <th v-if="hasPermission('view_users')" class="px-6 py-2 text-sm text-gray-500">Ver</th>
+                            <th v-if="hasPermission('edit_users')" class="px-6 py-2 text-sm text-gray-500">Editar</th>
+                            <th v-if="hasPermission('delete_users')" class="px-6 py-2 text-sm text-gray-500">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody class="_bg-white divide-y divide-gray-300">
@@ -128,7 +132,7 @@ watch(
                             <td class="px-6 py-4 text-sm text-gray-100 text-center">
                                 {{ formatDistanceToNow(new Date(user.created_at), { addSuffix: false, locale: es }) }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td v-if="hasPermission('view_users')" class="px-6 py-4">
                                 <Link
                                     :href="`/users/${user.id}`"
                                     class="px-4 py-1 text-sm text-blue-900 bg-blue-200 rounded-full hover:bg-blue-300 transition-colors"
@@ -136,7 +140,7 @@ watch(
                                     Mostrar
                                 </Link>
                             </td>
-                            <td class="px-6 py-4">
+                            <td v-if="hasPermission('edit_users')" class="px-6 py-4">
                                 <Link
                                     :href="`/users/${user.id}/edit`"
                                     class="px-4 py-1 text-sm text-green-900 bg-green-200 rounded-full hover:bg-green-300 transition-colors"
@@ -144,7 +148,7 @@ watch(
                                     Editar
                                 </Link>
                             </td>
-                            <td class="px-6 py-4">
+                            <td v-if="hasPermission('delete_users')" class="px-6 py-4">
                                 <!--
                                     Delete button: Backend validations
                                     - Cannot delete the 'root' user (UserController@destroy)
