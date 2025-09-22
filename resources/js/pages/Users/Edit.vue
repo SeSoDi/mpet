@@ -30,8 +30,6 @@ const form = useForm({
 
 const submit = () => {
     form.role_ids = selectedRoles.value;
-    console.log('Submitting form with role_ids:', form.role_ids);
-    console.log('Selected roles:', selectedRoles.value);
     form.put(`/users/${props.user.id}`);
 };
 

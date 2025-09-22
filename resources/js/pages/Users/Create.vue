@@ -9,8 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ref } from 'vue';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<{
+defineProps<{
     roles: Role[];
 }>();
 
