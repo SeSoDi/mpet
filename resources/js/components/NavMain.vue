@@ -34,8 +34,14 @@ const isSubItemActive = (item: NavItem): boolean => {
 // Auto-expand sections with active sub-items
 const initializeOpenItems = () => {
     props.items.forEach(item => {
-        if (item.items && isSubItemActive(item)) {
-            openItems.value[item.title] = true;
+        if (item.items) {
+            // Set to true only if has active sub-items, otherwise don't set (let manual control take over)
+            if (isSubItemActive(item)) {
+                openItems.value[item.title] = true;
+            } else {
+                // Remove from openItems to allow manual control
+                delete openItems.value[item.title];
+            }
         }
     });
 };
@@ -46,12 +52,25 @@ watch(() => page.url, () => {
 }, { immediate: true });
 
 const toggleItem = (title: string) => {
-    openItems.value[title] = !openItems.value[title];
+    const currentState = openItems.value[title];
+    // If undefined or false, set to true (open)
+    // If true, set to false (close)
+    openItems.value[title] = currentState !== true;
 };
 
 // Computed property to determine if an item should be open
 const isItemOpen = (item: NavItem): boolean => {
-    return openItems.value[item.title] || isSubItemActive(item);
+    const manuallyOpen = openItems.value[item.title];
+    const hasActiveSubItem = isSubItemActive(item);
+    
+    // If manually set to false, respect that choice even if sub-item is active
+    if (manuallyOpen === false) return false;
+    
+    // If manually set to true, respect that choice
+    if (manuallyOpen === true) return true;
+    
+    // If not manually set (undefined), open only if has active sub-item
+    return hasActiveSubItem;
 };
 </script>
 
@@ -74,7 +93,7 @@ const isItemOpen = (item: NavItem): boolean => {
                 </SidebarMenuButton>
 
                 <!-- Collapsible menu item (with sub-items) -->
-                <Collapsible v-else :open="isItemOpen(item)" @update:open="(open) => openItems[item.title] = open" as-child>
+                <Collapsible v-else :open="isItemOpen(item)" as-child>
                     <div>
                         <CollapsibleTrigger as-child>
                             <SidebarMenuButton
