@@ -207,22 +207,10 @@ const rightNavItems: NavItem[] = [
                                 v-for="item in rightNavItems"
                                 :key="item.title"
                             >
-                                <TooltipProvider :delay-duration="0">
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                as-child
-                                                class="group h-9 w-9 cursor-pointer"
-                                            >
-                                                                            <div
-                                v-for="item in rightNavItems"
-                                v-show="item.href"
-                                :key="item.title"
-                                class="flex"
-                            >
-                                <TooltipProvider :delay-duration="0">
+                                <TooltipProvider 
+                                    v-if="item.href"
+                                    :delay-duration="0"
+                                >
                                     <Tooltip>
                                         <TooltipTrigger>
                                             <Button
