@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Log;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -20,11 +21,18 @@ class LogService
     /**
      * Common channels
      */
-    const CHANNEL_AUTH = 'auth';
-    const CHANNEL_USER_MANAGEMENT = 'user_management';
-    const CHANNEL_ROLE_PERMISSION = 'role_permission';
-    const CHANNEL_SYSTEM = 'system';
-    const CHANNEL_API = 'api';
+    const CHANNEL_AUTH = 'Autenticacion';
+    const CHANNEL_USER_MANAGEMENT = 'Gestion de Usuarios';
+    const CHANNEL_ROLE_PERMISSION = 'Roles y Permisos';
+    const CHANNEL_SYSTEM = 'Sistema';
+    const CHANNEL_API = 'API';
+
+    /**
+     * Business area channels
+     */
+    const CHANNEL_VENTAS = 'Ventas';
+    const CHANNEL_NOMINA = 'Nomina';
+    const CHANNEL_CONTABILIDAD = 'Contabilidad';
 
     /**
      * Log an action with context
@@ -179,5 +187,89 @@ class LogService
     public static function critical(string $channel, string $message, array $context = []): Log
     {
         return self::log(self::LEVEL_CRITICAL, $channel, $message, $context);
+    }
+
+    /**
+     * Log ventas area activities
+     */
+    public static function ventas(string $action, array $data = [], array $context = []): Log
+    {
+        $messages = [
+            'created' => 'Registro de ventas creado',
+            'updated' => 'Registro de ventas actualizado',
+            'deleted' => 'Registro de ventas eliminado',
+            'imported' => 'Datos de ventas importados',
+            'exported' => 'Datos de ventas exportados',
+        ];
+
+        $message = $messages[$action] ?? "Acción en ventas: {$action}";
+        
+        // Agregar información del periodo si está disponible
+        if (isset($data['periodo_inicio'])) {
+            $periodo = Carbon::parse($data['periodo_inicio'])->format('M Y');
+            $message .= " - Periodo: {$periodo}";
+        }
+
+        return self::log(
+            self::LEVEL_INFO,
+            self::CHANNEL_VENTAS,
+            $message,
+            array_merge([
+                'action' => $action,
+                'data' => $data,
+            ], $context)
+        );
+    }
+
+    /**
+     * Log nomina area activities
+     */
+    public static function nomina(string $action, array $data = [], array $context = []): Log
+    {
+        $messages = [
+            'created' => 'Registro de nómina creado',
+            'updated' => 'Registro de nómina actualizado',
+            'deleted' => 'Registro de nómina eliminado',
+            'processed' => 'Nómina procesada',
+            'exported' => 'Nómina exportada',
+        ];
+
+        $message = $messages[$action] ?? "Acción en nómina: {$action}";
+
+        return self::log(
+            self::LEVEL_INFO,
+            self::CHANNEL_NOMINA,
+            $message,
+            array_merge([
+                'action' => $action,
+                'data' => $data,
+            ], $context)
+        );
+    }
+
+    /**
+     * Log contabilidad area activities
+     */
+    public static function contabilidad(string $action, array $data = [], array $context = []): Log
+    {
+        $messages = [
+            'created' => 'Registro contable creado',
+            'updated' => 'Registro contable actualizado',
+            'deleted' => 'Registro contable eliminado',
+            'reconciled' => 'Cuenta conciliada',
+            'report_generated' => 'Reporte contable generado',
+        ];
+
+        $message = $messages[$action] ?? "Acción en contabilidad: {$action}";
+
+        return self::log(
+            self::LEVEL_INFO,
+            self::CHANNEL_CONTABILIDAD,
+            $message,
+            array_merge([
+                'action' => $action,
+                'data' => $data,
+            ], $context)
+        );
     }
 }

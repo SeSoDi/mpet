@@ -15,7 +15,7 @@ import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { usePermissions } from '@/composables/usePermissions';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Github, LayoutGrid, Users, Shield, KeyRound, ScrollText } from 'lucide-vue-next';
+import { BookOpen, Github, LayoutGrid, Users, Shield, KeyRound, ScrollText, TrendingUp, Database, Settings, Receipt } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 
@@ -27,6 +27,46 @@ const baseMainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+];
+
+// Data capture section - forms for capturing different areas data
+const capturasItems: NavItem[] = [
+    {
+        title: 'Capturas',
+        icon: Database,
+        items: [
+            {
+                title: 'Ventas',
+                href: '/monthly-sales',
+                icon: TrendingUp,
+            },
+            {
+                title: 'Facturación',
+                href: '/monthly-billing',
+                icon: Receipt,
+            },
+        ],
+    },
+];
+
+// Datos Brutos section - raw data viewing per area
+const datosBrutosItems: NavItem[] = [
+    {
+        title: 'Datos Brutos',
+        icon: ScrollText,
+        items: [
+            {
+                title: 'Ventas',
+                href: '/monthly-sales/list',
+                icon: TrendingUp,
+            },
+            {
+                title: 'Facturación',
+                href: '/monthly-billing/list',
+                icon: Receipt,
+            },
+        ],
     },
 ];
 
@@ -73,9 +113,27 @@ const userManagementItems = computed((): NavItem[] => {
     }];
 });
 
+// Configuration section - system settings and management
+const configurationItems: NavItem[] = [
+    {
+        title: 'Configuración',
+        icon: Settings,
+        items: [
+            {
+                title: 'Unidades',
+                href: '/units',
+                icon: Database,
+            },
+        ],
+    },
+];
+
 // Combined navigation items based on permissions
 const mainNavItems = computed(() => [
     ...baseMainNavItems,
+    ...capturasItems,
+    ...datosBrutosItems,
+    ...configurationItems,
     ...userManagementItems.value,
 ]);
 
