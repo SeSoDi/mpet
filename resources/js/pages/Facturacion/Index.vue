@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ChevronRight, Calendar, Edit3, Save, X, Receipt, Building2 } from 'lucide-vue-next'
+import { Edit3, Save, X, Receipt } from 'lucide-vue-next'
 import { type BreadcrumbItem } from '@/types'
 import { useUnsavedChanges } from '@/composables/useUnsavedChanges'
 import CurrencyInput from '@/components/ui/currency-input.vue'
@@ -102,12 +102,6 @@ const breadcrumbs: BreadcrumbItem[] = [
   { title: 'Capturas', href: '#' },
   { title: 'Facturación', href: '/monthly-billing' },
 ]
-
-// Unidad seleccionada 
-const unidadSeleccionadaNombre = computed(() => {
-  const unidad = props.unidadesActivas.find(u => u.nombre === selectedUnidad.value)
-  return unidad?.nombre || selectedUnidad.value
-})
 
 // Badge de estado
 const statusBadge = computed(() => {

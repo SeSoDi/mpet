@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -22,10 +23,18 @@ return new class extends Migration
             $table->unsignedInteger('facturas_contado')->default(0);
             $table->decimal('facturacion_efectivo', 15, 2)->nullable();
             
-            // Campos calculados para filtros
-            $table->integer('cal_anio')->storedAs('YEAR(periodo_inicio)');
-            $table->integer('cal_mes')->storedAs('MONTH(periodo_inicio)');
-            $table->integer('cal_yyyymm')->storedAs('YEAR(periodo_inicio) * 100 + MONTH(periodo_inicio)');
+            // Campos calculados para filtros (database-agnostic)
+            $driver = Schema::getConnection()->getDriverName();
+            if ($driver === 'sqlite') {
+                $table->integer('cal_anio')->storedAs('CAST(strftime(\'%Y\', periodo_inicio) AS INTEGER)');
+                $table->integer('cal_mes')->storedAs('CAST(strftime(\'%m\', periodo_inicio) AS INTEGER)');
+                $table->integer('cal_yyyymm')->storedAs('CAST(strftime(\'%Y\', periodo_inicio) AS INTEGER) * 100 + CAST(strftime(\'%m\', periodo_inicio) AS INTEGER)');
+            } else {
+                // MySQL/MariaDB
+                $table->integer('cal_anio')->storedAs('YEAR(periodo_inicio)');
+                $table->integer('cal_mes')->storedAs('MONTH(periodo_inicio)');
+                $table->integer('cal_yyyymm')->storedAs('YEAR(periodo_inicio) * 100 + MONTH(periodo_inicio)');
+            }
             
             $table->timestamps();
             

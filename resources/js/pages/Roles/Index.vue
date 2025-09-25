@@ -2,7 +2,6 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem, Role } from '@/types';
 import { Head, Link, usePage, router } from '@inertiajs/vue3';
-import { usePermissions } from '@/composables/usePermissions';
 import { ref, watch, nextTick } from 'vue';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';

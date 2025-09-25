@@ -87,7 +87,7 @@ class VentaMensualController extends Controller
             ->porMes($month)
             ->first();
 
-        return Inertia::render('VentasMensuales/Capture', [
+        return Inertia::render('VentasMensuales/Index', [
             'ventaActual' => $ventaActual,
             'anioActual' => (int) $year,
             'mesActual' => (int) $month,

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { Head, useForm, router } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import PeriodNavigation from '@/components/PeriodNavigation.vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ChevronRight, Calendar, Edit3, Save, X } from 'lucide-vue-next'
+import { Edit3, Save, X } from 'lucide-vue-next'
 import { useUnsavedChanges } from '@/composables/useUnsavedChanges'
 import CurrencyInput from '@/components/ui/currency-input.vue'
 
@@ -248,14 +248,6 @@ const saveData = async () => {
       })
     }
   })
-}
-
-// Formatear moneda
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN'
-  }).format(value)
 }
 </script>
 

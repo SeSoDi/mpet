@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, reactive, watchEffect, onMounted } from 'vue'
-import { Head, useForm, Link } from '@inertiajs/vue3'
+import { computed, reactive, onMounted } from 'vue'
+import { Head, useForm } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
-import { ArrowLeft, Save, MapPin, Edit3, Plus } from 'lucide-vue-next'
+import { ArrowLeft, Save, Edit3, Plus } from 'lucide-vue-next'
 import { type BreadcrumbItem } from '@/types'
 import { useUnsavedChanges } from '@/composables/useUnsavedChanges'
 
