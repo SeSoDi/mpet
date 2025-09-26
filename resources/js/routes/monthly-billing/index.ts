@@ -625,7 +625,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\FacturacionMensualController::destroy
-* @see app/Http/Controllers/FacturacionMensualController.php:271
+* @see app/Http/Controllers/FacturacionMensualController.php:270
 * @route '/monthly-billing/{monthly_billing}'
 */
 export const destroy = (args: { monthly_billing: number | { id: number } } | [monthly_billing: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -640,7 +640,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\FacturacionMensualController::destroy
-* @see app/Http/Controllers/FacturacionMensualController.php:271
+* @see app/Http/Controllers/FacturacionMensualController.php:270
 * @route '/monthly-billing/{monthly_billing}'
 */
 destroy.url = (args: { monthly_billing: number | { id: number } } | [monthly_billing: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -673,7 +673,7 @@ destroy.url = (args: { monthly_billing: number | { id: number } } | [monthly_bil
 
 /**
 * @see \App\Http\Controllers\FacturacionMensualController::destroy
-* @see app/Http/Controllers/FacturacionMensualController.php:271
+* @see app/Http/Controllers/FacturacionMensualController.php:270
 * @route '/monthly-billing/{monthly_billing}'
 */
 destroy.delete = (args: { monthly_billing: number | { id: number } } | [monthly_billing: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -683,7 +683,7 @@ destroy.delete = (args: { monthly_billing: number | { id: number } } | [monthly_
 
 /**
 * @see \App\Http\Controllers\FacturacionMensualController::destroy
-* @see app/Http/Controllers/FacturacionMensualController.php:271
+* @see app/Http/Controllers/FacturacionMensualController.php:270
 * @route '/monthly-billing/{monthly_billing}'
 */
 const destroyForm = (args: { monthly_billing: number | { id: number } } | [monthly_billing: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -698,7 +698,7 @@ const destroyForm = (args: { monthly_billing: number | { id: number } } | [month
 
 /**
 * @see \App\Http\Controllers\FacturacionMensualController::destroy
-* @see app/Http/Controllers/FacturacionMensualController.php:271
+* @see app/Http/Controllers/FacturacionMensualController.php:270
 * @route '/monthly-billing/{monthly_billing}'
 */
 destroyForm.delete = (args: { monthly_billing: number | { id: number } } | [monthly_billing: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

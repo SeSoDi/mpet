@@ -160,12 +160,12 @@ class FacturacionMensualController extends Controller
             ]);
 
             // Log the creation
-            LogService::logUserAction(
-                'crear',
-                'facturación mensual',
-                $facturacion->id,
-                $facturacion
-            );
+            LogService::contabilidad('created', [
+                'facturacion_id' => $facturacion->id,
+                'periodo' => $facturacion->periodo_inicio->format('Y-m'),
+                'unidad' => $facturacion->unidad,
+                'facturado_total' => $facturacion->facturado_total_mxn,
+            ]);
 
             return redirect()->route('monthly-billing.index', [
                 'year' => $validated['year'],
@@ -241,13 +241,12 @@ class FacturacionMensualController extends Controller
             ]);
 
             // Log the update action
-            LogService::logUserAction(
-                'actualizar',
-                'facturación mensual',
-                $monthly_billing->id,
-                $monthly_billing,
-                $oldValues
-            );
+            LogService::contabilidad('updated', [
+                'facturacion_id' => $monthly_billing->id,
+                'periodo' => $monthly_billing->periodo_inicio->format('Y-m'),
+                'unidad' => $monthly_billing->unidad,
+                'changes' => array_keys($monthly_billing->getChanges()),
+            ]);
 
             return redirect()->route('monthly-billing.index', [
                 'year' => $validated['year'],
@@ -286,13 +285,12 @@ class FacturacionMensualController extends Controller
         $monthly_billing->delete();
 
         // Log the deletion
-        LogService::logUserAction(
-            'eliminar',
-            'facturación mensual',
-            $monthly_billing->id,
-            null,
-            $deletedData
-        );
+        LogService::contabilidad('deleted', [
+            'facturacion_id' => $monthly_billing->id,
+            'periodo' => $deletedData['periodo_inicio'],
+            'unidad' => $deletedData['unidad'],
+            'facturado_total' => $deletedData['facturado_total_mxn'],
+        ]);
 
         return redirect()->route('monthly-billing.index')
             ->with('success', 'Facturación mensual eliminada correctamente');

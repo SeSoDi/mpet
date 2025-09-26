@@ -7,13 +7,9 @@
 </template>
 
 <script setup lang="ts">
-console.log('=== TEST COMPONENT CREATED ===')
-
 interface Props {
   modelValue?: number
 }
 
 const props = defineProps<Props>()
-
-console.log('Test component props:', props)
 </script>

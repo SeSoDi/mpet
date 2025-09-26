@@ -86,21 +86,7 @@ const { hasUnsavedChanges, withoutProtection, resetOriginalData } = useUnsavedCh
   }
 )
 
-// Debug: Watch for changes
-watch(hasUnsavedChanges, (newValue) => {
-  console.log('Unsaved changes:', newValue)
-}, { immediate: true })
 
-// Debug: Watch form changes
-watch(() => form.Prospectos, (newValue, oldValue) => {
-  console.log('Prospectos changed:', oldValue, '->', newValue)
-})
-watch(() => form.VentasAproximadasMXN, (newValue, oldValue) => {
-  console.log('VentasAproximadasMXN changed:', oldValue, '->', newValue)
-})
-watch(() => form.VentasCerradasMXN, (newValue, oldValue) => {
-  console.log('VentasCerradasMXN changed:', oldValue, '->', newValue)
-})
 
 // Computed properties
 const currentMonthName = computed(() => monthNames[selectedMonth.value - 1])

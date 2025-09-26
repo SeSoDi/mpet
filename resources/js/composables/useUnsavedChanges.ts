@@ -35,7 +35,6 @@ export function useUnsavedChanges<T extends Record<string, any>>(
       if (exclude.includes(key)) continue
       
       if (current[key] !== original[key]) {
-        console.log(`Change detected in ${key}: ${original[key]} -> ${current[key]}`)
         return true
       }
     }
@@ -44,7 +43,6 @@ export function useUnsavedChanges<T extends Record<string, any>>(
 
   // Browser beforeunload protection
   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    console.log('beforeunload triggered, hasUnsavedChanges:', hasUnsavedChanges.value)
     if (hasUnsavedChanges.value) {
       event.preventDefault()
       event.returnValue = message
@@ -57,7 +55,6 @@ export function useUnsavedChanges<T extends Record<string, any>>(
 
   const setupInertiaProtection = () => {
     removeInertiaListener = router.on('before', (event) => {
-      console.log('Inertia navigation triggered, hasUnsavedChanges:', hasUnsavedChanges.value, 'isEnabled:', isEnabled.value)
       if (hasUnsavedChanges.value && isEnabled.value) {
         // Only show confirm dialog for navigation away from current route
         if (!confirm(message)) {
@@ -100,7 +97,6 @@ export function useUnsavedChanges<T extends Record<string, any>>(
   onMounted(() => {
     window.addEventListener('beforeunload', handleBeforeUnload)
     setupInertiaProtection()
-    console.log('Unsaved changes protection activated')
   })
 
   onUnmounted(() => {
@@ -108,7 +104,6 @@ export function useUnsavedChanges<T extends Record<string, any>>(
     if (removeInertiaListener) {
       removeInertiaListener()
     }
-    console.log('Unsaved changes protection deactivated')
   })
 
   return {

@@ -71,21 +71,12 @@ const { hasUnsavedChanges, withoutProtection, resetOriginalData } = useUnsavedCh
 
 // Sincronizar datos originales cuando el componente se monta (después de que las props estén disponibles)
 onMounted(() => {
-  console.log('=== DEBUGGING UNSAVED CHANGES ===')
-  console.log('Props unidad:', props.unidad)
-  console.log('Form data:', { nombre: form.nombre, descripcion: form.descripcion, activo: form.activo })
-  console.log('Original data before reset:', { ...originalData })
-  
   // Resetear los datos originales para que coincidan exactamente con el form actual
   resetOriginalData({
     nombre: form.nombre,
     descripcion: form.descripcion,
     activo: form.activo,
   })
-  
-  console.log('Original data after reset:', { ...originalData })
-  console.log('HasUnsavedChanges after reset:', hasUnsavedChanges.value)
-  console.log('=== END DEBUGGING ===')
 })
 
 // Métodos
