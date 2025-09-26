@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
-import type { User, Role, Permission } from '@/types'
+import type { User, Permission } from '@/types'
 
 /**
  * Composable for checking user permissions and roles

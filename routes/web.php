@@ -6,6 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\VentaMensualController;
+use App\Http\Controllers\UnidadController;
+use App\Http\Controllers\FacturacionMensualController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -30,6 +33,41 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('logs/{log}', [LogController::class, 'destroy'])->name('logs.destroy');
     Route::post('logs/bulk-delete', [LogController::class, 'bulkDelete'])->name('logs.bulk-delete');
     Route::get('api/logs/stats', [LogController::class, 'stats'])->name('logs.stats');
+});
+
+// Monthly Sales management routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('monthly-sales/list', [VentaMensualController::class, 'list'])->name('monthly-sales.list');
+    Route::resource('monthly-sales', VentaMensualController::class);
+    Route::get('monthly-sales-capture', [VentaMensualController::class, 'capture'])->name('monthly-sales.capture');
+});
+
+// Units (Unidades) management routes - Configuration section
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('units', UnidadController::class)->names([
+        'index' => 'units.index',
+        'create' => 'units.create', 
+        'store' => 'units.store',
+        'show' => 'units.show',
+        'edit' => 'units.edit',
+        'update' => 'units.update',
+        'destroy' => 'units.destroy'
+    ]);
+    Route::get('api/units/active', [UnidadController::class, 'active'])->name('units.active');
+});
+
+// Monthly Billing (Facturación Mensual) management routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('monthly-billing/list', [FacturacionMensualController::class, 'list'])->name('monthly-billing.list');
+    Route::resource('monthly-billing', FacturacionMensualController::class)->names([
+        'index' => 'monthly-billing.index',
+        'create' => 'monthly-billing.create',
+        'store' => 'monthly-billing.store',
+        'show' => 'monthly-billing.show',
+        'edit' => 'monthly-billing.edit',
+        'update' => 'monthly-billing.update',
+        'destroy' => 'monthly-billing.destroy'
+    ]);
 });
 
 require __DIR__.'/settings.php';
